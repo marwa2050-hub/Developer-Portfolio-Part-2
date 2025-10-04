@@ -1,23 +1,18 @@
 // src/components/ScrollProgress.jsx
-import React, { useEffect, useState } from 'react';
-import './scrollProgress.css';
+import React, { useEffect, useState } from "react";
+import "./ScrollProgress.css";
 
 export default function ScrollProgress() {
   const [scroll, setScroll] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.body.scrollHeight - window.innerHeight;
-      const scrollPosition = window.scrollY;
-      setScroll((scrollPosition / totalHeight) * 100);
+    const updateScroll = () => {
+      const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      setScroll(scrolled);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", updateScroll);
+    return () => window.removeEventListener("scroll", updateScroll);
   }, []);
 
-  return (
-    <div className="scroll-progress-bar-container">
-      <div className="scroll-progress-bar" style={{ width: `${scroll}%` }}></div>
-    </div>
-  );
+  return <div className="scroll-progress" style={{ width: `${scroll*100}%` }} />;
 }

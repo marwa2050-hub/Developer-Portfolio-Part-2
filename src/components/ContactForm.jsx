@@ -1,139 +1,113 @@
 // src/components/ContactForm.jsx
-import React, { useEffect, useRef, useState } from "react";
-import Modal from "./Modal";
-import useDebounce from "../utils/useDebounce";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Confetti from "react-confetti";
 import "./ContactForm.css";
 
-const STORAGE_KEY = "contact-draft-v1";
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 export default function ContactForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState("");
+  const [name, setName] = useState(localStorage.getItem("name") || "");
+  const [email, setEmail] = useState(localStorage.getItem("email") || "");
+  const [message, setMessage] = useState(localStorage.getItem("message") || "");
   const [errors, setErrors] = useState({});
-  const [open, setOpen] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [savedHint, setSavedHint] = useState(false);
 
-  // debounced email validator
-  const debouncedEmail = useDebounce(email, 400);
-
+  // Auto-save to localStorage
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const s = JSON.parse(raw);
-        setName(s.name || "");
-        setEmail(s.email || "");
-        setMsg(s.msg || "");
-        setSavedHint(true);
+    localStorage.setItem("name", name);
+    localStorage.setItem("email", email);
+    localStorage.setItem("message", message);
+  }, [name, email, message]);
+
+  // Debounced email validation
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setErrors(prev => ({ ...prev, email: "Invalid email format" }));
+      } else {
+        setErrors(prev => ({ ...prev, email: "" }));
       }
-    } catch (e) {}
-  }, []);
+    }, 400);
+    return () => clearTimeout(timeout);
+  }, [email]);
 
-  // autosave on changes
-  useEffect(() => {
-    const payload = { name, email, msg, savedAt: Date.now() };
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-      if (name || email || msg) setSavedHint(true);
-      else setSavedHint(false);
-    } catch (e) {}
-  }, [name, email, msg]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let newErrors = {};
+    if (!name) newErrors.name = "Name is required";
+    if (!message) newErrors.message = "Message is required";
 
-  // email validation debounced
-  useEffect(() => {
-    setErrors((prev) => {
-      const copy = { ...prev };
-      if (debouncedEmail && !EMAIL_REGEX.test(debouncedEmail)) copy.email = "Invalid email format";
-      else delete copy.email;
-      return copy;
-    });
-  }, [debouncedEmail]);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
-  const validateAll = () => {
-    const e = {};
-    if (!name.trim()) e.name = "Name is required";
-    if (!msg.trim()) e.msg = "Message is required";
-    if (email && !EMAIL_REGEX.test(email)) e.email = "Invalid email address";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-    if (!validateAll()) return;
-    // simulate send
-    setOpen(true);
+    setErrors({});
+    setSubmitted(true);
     setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 3500);
-    localStorage.removeItem(STORAGE_KEY);
-    setSavedHint(false);
-    setName(""); setEmail(""); setMsg("");
+
+    // Clear form
+    setName("");
+    setEmail("");
+    setMessage("");
+
+    setTimeout(() => setShowConfetti(false), 5000);
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    localStorage.removeItem("message");
   };
 
   return (
-    <section className="card contact-card">
-      {showConfetti && <Confetti recycle={false} numberOfPieces={250} />}
+    <section className="contact-form-section card">
       <h3>Contact Me</h3>
-
-      {savedHint && <div className="saved-hint">You have unsent message data saved!</div>}
-
-      <form onSubmit={handleSubmit} noValidate>
-        <label>Name*</label>
-        <input
-          className="form-input"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          aria-invalid={!!errors.name}
-        />
-        {errors.name && <div className="field-error">{errors.name}</div>}
-
-        <label>Email</label>
-        <input
-          className="form-input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          aria-invalid={!!errors.email}
-        />
-        {errors.email ? <div className="field-error">{errors.email}</div> :
-          (email ? <div className="field-hint">Looks good — we will only contact if needed.</div> : null)
-        }
-
-        <label>Message*</label>
-        <textarea
-          className="form-textarea"
-          rows={5}
-          value={msg}
-          onChange={(e) => setMsg(e.target.value)}
-        />
-        {errors.msg && <div className="field-error">{errors.msg}</div>}
-
-        <div className="form-actions">
-          <button className="btn-primary" type="submit">Send</button>
-          <button
-            type="button"
-            className="btn-ghost"
-            onClick={() => { localStorage.removeItem(STORAGE_KEY); setName(""); setEmail(""); setMsg(""); setSavedHint(false); }}
-          >
-            Clear Draft
-          </button>
-        </div>
+      {localStorage.getItem("name") && localStorage.getItem("message") && (
+        <p className="unsent-hint">You have unsent message data saved!</p>
+      )}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
+          {errors.name && <span className="error">{errors.name}</span>}
+        </label>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          {errors.email && <span className="error">{errors.email}</span>}
+        </label>
+        <label>
+          Message:
+          <textarea
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+          />
+          {errors.message && <span className="error">{errors.message}</span>}
+        </label>
+        <button type="submit">Send Message</button>
       </form>
 
-      <h4 className="preview-title">Live Preview</h4>
-      <div className="live-preview">
-        <strong>{name || "Your name"}</strong>
-        <p style={{ whiteSpace: "pre-wrap" }}>{msg || "Your message preview..."}</p>
-        <small>{email ? `Reply to: ${email}` : "No email provided"}</small>
-      </div>
+      <AnimatePresence>
+        {submitted && (
+          <motion.div
+            className="toast-modal"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.3 }}
+          >
+            Thank you, {name || "User"}! Your message was sent.
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <h3>Thank you, {name || "friend"}!</h3>
-        <p>Your message was sent.</p>
-      </Modal>
+      {showConfetti && <Confetti />}
     </section>
   );
 }

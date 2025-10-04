@@ -3,30 +3,20 @@ import React, { useState } from "react";
 import "./ProjectCard.css";
 
 export default function ProjectCard({ project }) {
-  const [open, setOpen] = useState(false);
-  const { name, desc, img, tech, featured, status } = project;
-  return (
-    <div className={`project-card ${featured ? "featured" : ""}`}>
-      <div className="thumb" style={{backgroundImage:`url(${img})`}} />
-      <div className="pc-body">
-        <h4>{name}</h4>
-        <p>{desc}</p>
-        <div className="badges">
-          {featured && <span className="badge">🌟 Featured</span>}
-          {status && <span className="tag">{status}</span>}
-        </div>
-        <div className="pc-actions">
-          <button onClick={()=>setOpen(!open)} className="btn-ghost small">{open ? "Hide" : "View Details"}</button>
-          <a className="btn-primary small" href="#" target="_blank" rel="noreferrer">Live</a>
-        </div>
+  const [showDetails, setShowDetails] = useState(false);
 
-        {open && (
-          <div className="pc-details">
-            <strong>Tech:</strong> {tech.join(", ")}
-            <p className="pc-extra">More details and description can go here — show features, links, API, challenges, etc.</p>
-          </div>
-        )}
-      </div>
+  return (
+    <div className="project-card" style={{ cursor: "pointer" }} onClick={() => setShowDetails(!showDetails)}>
+      <img src={project.img} alt={project.name} className="project-img" />
+      <h4>{project.name}</h4>
+      <p>{project.desc}</p>
+      {showDetails && (
+        <div className="project-details">
+          <p>Tech Stack: {project.tech.join(", ")}</p>
+          <p>Status: {project.status}</p>
+        </div>
+      )}
+      {project.featured && <span className="badge">🌟 Featured</span>}
     </div>
   );
 }
