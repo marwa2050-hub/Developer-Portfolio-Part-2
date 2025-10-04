@@ -1,0 +1,11 @@
+.project-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 8px;
+  background: white;
+}
+
+.project-card a {
+  color: #4caf50;
+  text-decoration: none;
+}

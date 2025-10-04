@@ -1,36 +1,32 @@
-import React from 'react';
-import Navbar from './components/Navbar';
-import Header from './components/Header';
-import Profile from './components/Profile';
-import About from './components/About';
-import Projects from './components/Projects';
-import Footer from './components/Footer';
+import React from "react";
+import Header from "./components/Header";
+import About from "./components/About";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import ContactForm from "./components/ContactForm";
+import FeedbackWall from "./components/FeedbackWall";
+import Footer from "./components/Footer";
+import ScrollProgress from "./components/ScrollProgress";
+import ThemeToggle from "./components/ThemeToggle";
+import "./index.css";
 
-// ایمپورت عکس‌ها
-import profilePic from './assets/profile.jpg';
+// عکس پروفایل از assets
+import profilePic from "./assets/profile.jpg";
 
-function App() {
-  const name = "Marwa Noorestani";
-  const welcomeMessage = "Welcome to my developer portfolio!";
-  const profileTitle = "Frontend Developer";
-  const profileBio = "I build interactive and responsive web applications using React.";
-
-  const aboutIntro = "Hello! I'm learning React, JavaScript, and modern frontend tools to build cool things.";
-  const aboutGoals = "My goal is to become a versatile frontend developer and build real-world apps.";
-  const myHobbies = ["Reading", "Music", "Coding Side-Projects", "Traveling", "Photography"];
-
+export default function App() {
   return (
     <div>
-      <Navbar />
-      <main style={{ padding: '0 1rem', maxWidth: '900px', margin: '0 auto' }}>
-        <Header name={name} welcomeMessage={welcomeMessage} />
-        <Profile photo={profilePic} title={profileTitle} bio={profileBio} />
-        <About intro={aboutIntro} goals={aboutGoals} hobbies={myHobbies} />
+      <ScrollProgress />
+      <Header />
+      <main style={{ maxWidth: 980, margin: "20px auto", padding: "0 16px" }}>
+        <About profilePic={profilePic} />
+        <Skills />
         <Projects />
+        <ContactForm />
+        <FeedbackWall />
       </main>
       <Footer />
+      <ThemeToggle />
     </div>
   );
 }
-
-export default App;

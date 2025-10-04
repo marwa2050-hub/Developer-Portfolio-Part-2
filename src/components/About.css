@@ -1,0 +1,11 @@
+.about {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}

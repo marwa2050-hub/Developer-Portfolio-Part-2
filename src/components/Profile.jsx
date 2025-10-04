@@ -1,40 +1,23 @@
-import React from 'react';
+<ScrollProgress />
+import React, { useState } from 'react';
+import profilePic from '../assets/profile.jpg';
 
-export default function Profile({ photo, title, bio }) {
-  const sectionStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2rem',
-    padding: '2rem 0',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
-  };
-  const imgStyle = {
-    width: '160px',
-    height: '160px',
-    borderRadius: '50%',
-    objectFit: 'cover',
-    border: '3px solid #ccc'
-  };
-  const infoStyle = {
-    maxWidth: '500px',
-    textAlign: 'center'
-  };
-  const titleStyle = {
-    fontSize: '1.75rem',
-    margin: '0.5rem 0'
-  };
-  const bioStyle = {
-    fontSize: '1rem',
-    color: '#555'
-  };
+export default function Profile({ title, bio }) {
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <section style={sectionStyle}>
-      <img src={photo} alt="Profile" style={imgStyle} />
-      <div style={infoStyle}>
-        <h2 style={titleStyle}>{title}</h2>
-        <p style={bioStyle}>{bio}</p>
+    <section style={{ display: 'flex', gap: 16, alignItems: 'center', marginTop: 24 }}>
+      <img 
+        src={profilePic} 
+        alt="Profile" 
+        width={120} 
+        style={{ borderRadius: '50%', transform: hovered ? 'scale(1.05)' : 'scale(1)', transition: '0.3s' }} 
+        onMouseEnter={() => setHovered(true)} 
+        onMouseLeave={() => setHovered(false)} 
+      />
+      <div>
+        <h2>{title}</h2>
+        <p>{bio}</p>
       </div>
     </section>
   );

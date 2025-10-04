@@ -1,0 +1,10 @@
+.theme-toggle-group { position: fixed; bottom: 18px; left: 18px; display:flex; gap:8px; z-index: 120; }
+.theme-btn { padding:8px 10px; border-radius:8px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+.theme-btn.active { box-shadow: 0 6px 18px rgba(79,70,229,0.12); border-color:#4f46e5; background:linear-gradient(90deg,#fff,#eef); }
+
+/* theme colors via data-theme attribute */
+:root { --bg:#f4f4f9; --card:#fff; --text:#111; --accent:#4f46e5; --muted:#666; }
+[data-theme="dark"] { --bg:#0b1220; --card:#071021; --text:#eaeef6; --accent:#7c5cff; --muted:#9aa4b2; }
+[data-theme="ocean"] { --bg:#ecfbff; --card:#e6fbff; --text:#0a2b3a; --accent:#0ea5a4; --muted:#2e6b76; }
+
+body { background: var(--bg); color: var(--text); }

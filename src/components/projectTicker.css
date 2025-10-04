@@ -1,0 +1,1 @@
+.ticker-item{padding:6px 0;border-bottom:1px dashed rgba(15,23,42,0.04);animation:slideIn .3s ease}@keyframes slideIn{from{transform:translateX(12px);opacity:0}to{transform:translateX(0);opacity:1}}

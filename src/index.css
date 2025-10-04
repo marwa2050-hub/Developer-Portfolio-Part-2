@@ -5,7 +5,52 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f0f2f5;
-  color: #222;
+  font-family: Arial, sans-serif;
+  background: #f4f4f9;
+  color: #333;
+  line-height: 1.6;
 }
+
+.app {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+h2 {
+  margin: 20px 0;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+:root {
+  --bg: #f4f4f9;
+  --card: #fff;
+  --text: #111;
+  --accent: #4f46e5;
+  --muted: #666;
+}
+
+[data-theme="dark"] {
+  --bg: #0b1220;
+  --card: #071021;
+  --text: #eaeef6;
+  --accent: #7c5cff;
+  --muted: #9aa4b2;
+}
+
+[data-theme="ocean"] {
+  --bg: #ecfbff;
+  --card: #e6fbff;
+  --text: #0a2b3a;
+  --accent: #0ea5a4;
+  --muted: #2e6b76;
+}
+
+html,body { height:100%; }
+body { background: var(--bg); color: var(--text); font-family: Inter, Arial, sans-serif; margin:0; padding:0; }
+.card { background: var(--card); color: var(--text); border-radius:10px; padding:12px; box-shadow: 0 8px 18px rgba(2,6,23,0.04); }
+a { color: var(--accent); }

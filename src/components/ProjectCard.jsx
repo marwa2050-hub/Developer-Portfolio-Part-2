@@ -1,57 +1,31 @@
-import React from 'react';
-import TechBadge from './TechBadge';
+// src/components/ProjectCard.jsx
+import React, { useState } from "react";
+import "./ProjectCard.css";
 
 export default function ProjectCard({ project }) {
-  const cardStyle = {
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    overflow: 'hidden',
-    marginBottom: '2rem',
-    boxShadow: project.featured ? '0 0 10px rgba(255,215,0,0.7)' : 'none',
-    position: 'relative'
-  };
-  const imageStyle = {
-    width: '100%',
-    height: '200px',
-    objectFit: 'cover'
-  };
-  const contentStyle = {
-    padding: '1rem'
-  };
-  const featuredBadgeStyle = {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    backgroundColor: 'gold',
-    color: '#333',
-    padding: '0.3rem 0.6rem',
-    borderRadius: '4px',
-    fontWeight: 'bold'
-  };
-  const linkStyle = {
-    marginTop: '1rem',
-    display: 'inline-block',
-    textDecoration: 'none',
-    color: '#007bff'
-  };
-
+  const [open, setOpen] = useState(false);
+  const { name, desc, img, tech, featured, status } = project;
   return (
-    <div style={cardStyle}>
-      { project.featured && <div style={featuredBadgeStyle}>🌟 Featured</div> }
-      { project.image && <img src={project.image} alt={project.name} style={imageStyle} /> }
-      <div style={contentStyle}>
-        <h3>{project.name}</h3>
-        <p>{project.description}</p>
-        <div>
-          { project.techStack.map((tech, idx) => (
-            <TechBadge key={idx} tech={tech} />
-          )) }
+    <div className={`project-card ${featured ? "featured" : ""}`}>
+      <div className="thumb" style={{backgroundImage:`url(${img})`}} />
+      <div className="pc-body">
+        <h4>{name}</h4>
+        <p>{desc}</p>
+        <div className="badges">
+          {featured && <span className="badge">🌟 Featured</span>}
+          {status && <span className="tag">{status}</span>}
         </div>
-        { project.liveLink && (
-          <a href={project.liveLink} target="_blank" rel="noopener noreferrer" style={linkStyle}>
-            View Live
-          </a>
-        ) }
+        <div className="pc-actions">
+          <button onClick={()=>setOpen(!open)} className="btn-ghost small">{open ? "Hide" : "View Details"}</button>
+          <a className="btn-primary small" href="#" target="_blank" rel="noreferrer">Live</a>
+        </div>
+
+        {open && (
+          <div className="pc-details">
+            <strong>Tech:</strong> {tech.join(", ")}
+            <p className="pc-extra">More details and description can go here — show features, links, API, challenges, etc.</p>
+          </div>
+        )}
       </div>
     </div>
   );
