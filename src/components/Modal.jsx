@@ -1,6 +1,6 @@
 // src/components/Modal.jsx
 import React from "react";
-import "./modal.css";
+import "./Modal.css";
 
 export default function Modal({ open, onClose, children }) {
   if (!open) return null;
