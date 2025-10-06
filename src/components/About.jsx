@@ -1,5 +1,5 @@
 // src/components/About.jsx
-import React, { useState } from "react";
+import React, { useState } from "React";
 import "./About.css";
 
 export default function About({ profilePic }) {
