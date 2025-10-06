@@ -6,5 +6,8 @@ This interactive developer portfolio, built with React and Vite, highlights my p
 Live Demo
 View Project: (https://marwa2050-hub.github.io/Developer-Portfolio-Part-2/)
 
+GitHub Repository Link
+https://github.com/marwa2050-hub/Developer-Portfolio-Part-2
+
 Reflection
 Creating this portfolio was both challenging and rewarding. The main challenge was ensuring all assets loaded correctly on GitHub Pages, but it strengthened my problem-solving skills. I especially enjoyed designing a responsive and visually appealing interface that reflects my personal style. This project reinforced my understanding of modern web development and the satisfaction of seeing my work live online.
