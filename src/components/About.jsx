@@ -1,4 +1,5 @@
 // src/components/About.jsx
+import React, { useState } from "React";
 import React, from "React";
 import "./About.css";
 
