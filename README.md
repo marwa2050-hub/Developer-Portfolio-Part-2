@@ -1,8 +1,5 @@
 Developer Portfolio - Part 2
  
-Project Overview
-This interactive developer portfolio, built with React and Vite, highlights my projects, skills, and personal journey as a developer. It combines clean design, responsiveness, and smooth user interactions to create an engaging experience for visitors.
-
 Live Demo
 View Project: (https://marwa2050-hub.github.io/Developer-Portfolio-Part-2/)
 
